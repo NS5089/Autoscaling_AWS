@@ -1,0 +1,50 @@
+#Declaring a launch configuration
+
+AWSTemplateFormatVersion: '2010-09-09'
+ mySimpleConfig:
+   Type: AWS::AutoScaling::LaunchConfiguration
+  Properties:
+    ImageId: ami-029bfac3973c1bda1
+    SecurityGroups:
+    - Ref: Auto-scaling-group-for-tetherfi
+     - myExistingEC2SecurityGroup
+         InstanceType: t2.medium
+
+#Declaring a single instance Auto Scaling group
+
+ myASG:
+   Type: AWS::AutoScaling::AutoScalingGroup
+   Properties:
+    VPCZoneIdentifier:
+         -subnet-7df3531b
+         -subnet-c448e7e5 
+         -subnet-b0bfcffd 
+         -subnet-47943918 
+         -subnet-c3b52fcd  
+         -subnet-fe7f8bcf
+        LaunchConfigurationName: Auto-scaling-group-singtel
+        MinSize: '1'
+        MaxSize: '2'
+       DesiredCapacity: '1'
+
+#Declaring an Auto Scaling group with load balancing
+
+    myServerGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier:
+         -subnet-7df3531b
+         -subnet-c448e7e5 
+         -subnet-b0bfcffd 
+         -subnet-47943918 
+         -subnet-c3b52fcd  
+         -subnet-fe7f8bcf
+      LaunchConfigurationName: loadBalancing-for-group-singtel
+      MinSize: '1'
+      MaxSize: '2'
+      HealthCheckGracePeriod: 300
+      MaxInstanceLifetime: 2592000
+      TargetGroupARNs:
+        - arn:aws:elasticloadbalancing:us-east-1:330495547701:targetgroup/Target-singtel-tetherfi/320588c8c88076a5
+
+
