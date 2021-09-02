@@ -53,7 +53,7 @@ Resources:
     
 
 
-  ALBSecurityGroup:
+  SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       VpcId: !ImportValue VPC
